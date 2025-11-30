@@ -1,46 +1,29 @@
 package com.example.taskmaster.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-
-import java.time.LocalDateTime;
-
-import jakarta.persistence.ManyToMany;
-
-import java.util.HashSet;
+import lombok.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@Data
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
+@Builder
 public class User {
-
     @Id
-    private String uid;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password_hash", nullable = false)
-    private String passwordHash;
+    @Column(nullable = false)
+    private String password;
 
     @Column(nullable = false)
-    private String name;
+    private String fullName;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    public void prePersist() {
-        LocalDateTime now = LocalDateTime.now();
-        createdAt = now;
-        updatedAt = now;
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
+    private String avatar;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -48,5 +31,5 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles = new HashSet<>();
+    private Set<Role> roles;
 }

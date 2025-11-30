@@ -271,3 +271,24 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+-- Bảng roles
+CREATE TABLE roles (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(20) UNIQUE NOT NULL
+);
+
+-- Bảng liên kết user - role
+CREATE TABLE user_roles (
+    user_id BIGINT NOT NULL,
+    role_id BIGINT NOT NULL,
+    PRIMARY KEY (user_id, role_id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
+);
+
+-- Dữ liệu mẫu
+INSERT INTO roles (name) VALUES ('ROLE_USER'), ('ROLE_ADMIN');
+
+-- Gán ROLE_ADMIN cho user đầu tiên (id=1) nếu cần
+-- INSERT INTO user_roles (user_id, role_id) VALUES (1, 2);
